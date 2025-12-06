@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cancer Awareness & Support: Resources, emotional support, and information for patients and families. Early detection and community help.">
+    <title>Cancer Awareness & Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Google Fonts for professional typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Toggle between light and dark mode"><i class="fas fa-moon"></i> Toggle Dark Mode</button>
+    </div>
+
+    <!-- Header / Nav -->
+    <header class="section section-header">
+        <h1><i class="fas fa-heartbeat"></i> Cancer Awareness & Support</h1>
+        <nav role="navigation" aria-label="Main navigation">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#resources">Resources</a>
+            <a href="#support">Support</a>
+            <a href="#contact">Contact</a>
+            <a href="dashboard.html" aria-label="View the donation tracking dashboard">Dashboard</a>
+        </nav>
+    </header>
+
+    <!-- Hero / Banner section -->
+    <section id="home" class="section section-hero">
+        <div class="hero-text">
+            <h2>Together Against Cancer</h2>
+            <p>Early detection, emotional support, and reliable information for patients and families. Join our mission to empower communities.</p>
+            <button class="donate-btn" id="donateBtn"><i class="fas fa-donate"></i> Donate Now</button>
+        </div>
+        <div class="hero-image">
+            <img src="https://source.unsplash.com/featured/?cancer-awareness" alt="Illustrative image promoting cancer awareness and support" style="max-width:100%; height:auto;" loading="lazy">
+        </div>
+    </section>
+
+    <!-- About / Awareness -->
+    <section id="about" class="section section-about">
+        <h2>About Cancer Awareness</h2>
+        <p>Cancer affects millions worldwide. Our awareness campaigns focus on prevention, early screening, and unwavering support for survivors. We provide resources to educate and empower communities, fostering hope and resilience.</p>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="section section-resources">
+        <h2>Helpful Resources</h2>
+        <ul>
+            <li><a href="https://www.cancer.org" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> American Cancer Society</a></li>
+            <li><a href="https://www.who.int/cancer" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> WHO Cancer Facts</a></li>
+            <li><a href="https://www.nci.nih.gov" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> National Cancer Institute</a></li>
+        </ul>
+    </section>
+
+    <!-- Support info -->
+    <section id="support" class="section section-support">
+        <h2>How We Support</h2>
+        <p>We offer counseling, financial aid, and community groups. Reach out for personalized help and connect with others on similar journeys.</p>
+        <div class="testimonials">
+            <h3>Testimonials</h3>
+            <div class="slider" role="region" aria-label="Testimonials slider">
+                <div class="slide active">"This support saved my family." - John D.</div>
+                <div class="slide">"Incredible resources and care." - Sarah K.</div>
+                <div class="slide">"Grateful for the community." - Mike T.</div>
+            </div>
+            <button id="nextSlideBtn" aria-label="Show next testimonial"><i class="fas fa-arrow-right"></i> Next</button>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section id="contact" class="section section-contact">
+        <h2>Contact Us</h2>
+        <form id="contactForm">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Your Name" required aria-label="Name">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="your@email.com" required aria-label="Email">
+
+            <label for="message">Message</label>
+            <textarea id="message" rows="4" placeholder="Write your message..." required aria-label="Message"></textarea>
+
+            <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </form>
+        <div id="successMsg" style="display:none; color:green; margin-top:10px;" role="alert">Message sent successfully!</div>
+    </section>
+
+    <!-- Quotes Section -->
+    <section id="quotes" class="section section-quotes">
+        <h2>Inspirational Quotes</h2>
+        <div class="quote-container">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p id="quoteText" role="status" aria-live="polite">Loading quote...</p>
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;"><i class="fas fa-spinner fa-spin"></i></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="section section-footer">
+        <p>&copy; 2023 Cancer Awareness & Support. All rights reserved. | <a href="#privacy">Privacy Policy</a></p>
+    </footer>
+
+    <!-- Modal for Donation -->
+    <div id="donationModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" id="closeModal" aria-label="Close donation modal">&times;</span>
+            <h2 id="modalTitle"><i class="fas fa-hand-holding-heart"></i> Make a Donation</h2>
+            <p>Every contribution helps fund research, support services, and awareness campaigns. Thank you for your generosity!</p>
+            <form id="donationForm">
+                <label for="donationAmount">Donation Amount (₹)</label>
+                <select id="donationAmount" required>
+                    <option value="">Select Amount</option>
+                    <option value="25">₹25</option>
+                    <option value="50">₹50</option>
+                    <option value="100">₹100</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" id="customAmount" placeholder="Enter custom amount" style="display: none;" min="1">
+                <label for="paymentMethod">Payment Method</label>
+                <select id="paymentMethod" required>
+                    <option value="">Select Method</option>
+                    <option value="card">Credit/Debit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+                <button type="submit" id="confirmDonation"><i class="fas fa-check"></i> Confirm Donation</button>
+            </form>
+            <div id="donationSuccess" style="display: none; color: green; margin-top: 10px;" role="alert">Thank you! Your donation has been processed. <a href="dashboard.html" style="color: inherit; text-decoration: underline;">View Dashboard</a></div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        document.getElementById('themeBtn').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const icon = document.querySelector('#themeBtn i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            if (!email.includes('@')) {
+                alert('Please enter a valid email.');
+                return;
+            }
+            document.getElementById('successMsg').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('successMsg').style.display = 'none';
+            }, 3000);
+            this.reset();
+        });
+
+        // Testimonials Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const nextBtn = document.getElementById('nextSlideBtn');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        showSlide(currentSlide);
+
+        donationForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const amount = donationAmount.value === 'other' ? parseFloat(customAmount.value) : parseFloat(donationAmount.value);
+            if (!amount || isNaN(amount) || amount < 1) {
+                alert('Please enter a valid donation amount.');
+                return;
+            }
+
+            // Save to localStorage (connect to dashboard)
+            const donations = JSON.parse(localStorage.getItem('donations')) || [];
+            const currentMonth = new Date().toLocaleString('default', { month: 'short' });
+            donations.push({ amount, date: new Date().toISOString(), month: currentMonth });
+            localStorage.setItem('donations', JSON.stringify(donations));
+
+            // Update totals in localStorage
+            const totalDonations = donations.reduce((sum, d) => sum + d.amount, 0);
+            const totalDonors = new Set(donations.map(d => d.date)).size; // Simple unique donor count
+            localStorage.setItem('totalDonations', totalDonations);
+            localStorage.setItem('totalDonors', totalDonors);
+
+            donationSuccess.style.display = 'block';
+            setTimeout(() => {
+                donationSuccess.style.display = 'none';
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+                donationForm.reset();
+                customAmount.style.display = 'none';
+            }, 5000);
+        });
+
+        // Fallback to dummy data if no real data (in rupees)
+        const dummyData = {
+            totalDonations: 12450,  // Equivalent to ~$150 USD at 83 INR/USD, but kept as is
+            totalDonors: 87,
+            trends: [
+                { month: 'Jan', donations: 1200, donors: 10 },
+                { month: 'Feb', donations: 1800, donors: 15 },
+                { month: 'Mar', donations: 2500, donors: 20 },
+                { month: 'Apr', donations: 3000, donors: 25 },
+                { month: 'May', donations: 2200, donors: 12 },
+                { month: 'Jun', donations: 1750, donors: 5 }
+            ]
+        };
+
+        // In the loadDashboardData function, update the display:
+        document.getElementById('totalDonations').textContent = `₹${data.totalDonations.toLocaleString()}`;
+
+        // In the table population:
+        tr.innerHTML = `<td>${row.month}</td><td>₹${row.donations}</td><td>${row.donors}</td>`;
+
+        // In the chart options:
+        ticks: {
+            callback: function(value) { return '₹' + value; }
+        },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    const donors = data.trends[context.dataIndex].donors;
+                    return `₹${context.parsed.y} (${donors} donor${donors !== 1 ? 's' : ''})`;
+                }
+            }
+        }
+
+        // Close modal on outside click or Esc
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+            }
+        });
+
+        // Quotes
+        function loadQuote() {
+            const spinner = document.getElementById('loadingSpinner');
+            const quoteText = document.getElementById('quoteText');
+            spinner.style.display = 'inline-block';
+            quoteText.textContent = '';
+            fetch("https://api.quotable.io/random")
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    spinner.style.display = 'none';
+                    quoteText.textContent = `"${data.content}" - ${data.author}`;
+                })
+                .catch(error => {
+                    spinner.style.display = 'none';
+                    quoteText.textContent = "Unable to load quote. Please check your connection.";
+                    console.error('Quote fetch error:', error);
+                });
+        }
+
+        loadQuote();
+        setInterval(loadQuote, 30000);
+    </script>
+</body>
+</html>

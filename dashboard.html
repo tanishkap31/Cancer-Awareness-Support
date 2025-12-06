@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Tracking Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            flex: 1 1 200px;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+
+            .stat:hover {
+                transform: scale(1.05);
+            }
+
+            .stat h3 {
+                margin-bottom: 10px;
+                color: #007bff;
+            }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+            .search-bar input {
+                padding: 8px;
+                width: 100%;
+                max-width: 300px;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+
+            table:hover {
+                box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: 300px;
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+
+            .export-btn:hover {
+                background: #218838;
+            }
+
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+            }
+        }
+        /* ... (rest of the CSS remains the same) */
+
+        /* Header */
+        .section-header {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+            .section-header h1 {
+                font-size: 1.5em;
+            }
+
+            .section-header nav {
+                display: flex;
+                align-items: center;
+            }
+
+                .section-header nav a {
+                    margin: 0 15px;
+                    color: #fff;
+                    text-decoration: none;
+                    transition: color 0.3s;
+                }
+
+                    .section-header nav a:hover {
+                        color: #007bff;
+                    }
+
+        .back-home-btn {
+            margin: 0 15px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+
+            .back-home-btn:hover {
+                background-color: #0056b3;
+            }
+
+        /* ... (rest of the CSS remains the same) */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Donation Tracking Dashboard</h1>
+        <p>Monitor donations and trends for our cause.</p>
+    </header>
+    <div class="container">
+        <div class="stats">
+            <div class="stat">
+                <h3>Total Donations</h3>
+                <p id="totalDonations">₹12,500</p>
+            </div>
+            <div class="stat">
+                <h3>Number of Donors</h3>
+                <p id="numDonors">150</p>
+            </div>
+        </div>
+        <button class="export-btn" onclick="exportToCSV()">Export to CSV</button>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search by month..." onkeyup="filterTable()">
+        </div>
+        <h2>Donation Trends</h2>
+        <table id="trendsTable">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Donations (₹)</th>
+                    <th>Donors</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dummy data populated by JS -->
+            </tbody>
+        </table>
+        <div class="chart-container">
+            <h2>Monthly Donation Chart</h2>
+            <canvas id="donationChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h2>Donor Distribution</h2>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Dummy data (in rupees)
+        let trendsData = [
+            { month: 'Jan', donations: 1200, donors: 12 },
+            { month: 'Feb', donations: 1500, donors: 15 },
+            { month: 'Mar', donations: 1800, donors: 18 },
+            { month: 'Apr', donations: 2200, donors: 22 },
+            { month: 'May', donations: 2500, donors: 25 },
+            { month: 'Jun', donations: 2800, donors: 28 }
+        ];
+
+        // Populate table
+        function populateTable(data) {
+            const tbody = document.querySelector('#trendsTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row.month}</td><td>₹${row.donations}</td><td>${row.donors}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        populateTable(trendsData);
+
+        // Calculate totals
+        function updateStats(data) {
+            const totalDonations = data.reduce((sum, row) => sum + row.donations, 0);
+            const totalDonors = data.reduce((sum, row) => sum + row.donors, 0);
+            document.getElementById('totalDonations').textContent = `₹${totalDonations}`;
+            document.getElementById('numDonors').textContent = totalDonors;
+        }
+
+        updateStats(trendsData);
+
+        // Filter table
+        function filterTable() {
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = trendsData.filter(row => row.month.toLowerCase().includes(filter));
+            populateTable(filteredData);
+            updateStats(filteredData);
+            drawCharts(filteredData);
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            let csv = 'Month,Donations (₹),Donors\n';
+            trendsData.forEach(row => {
+                csv += `${row.month},${row.donations},${row.donors}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'donations.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Bar Chart
+        function drawBarChart(data) {
+            const canvas = document.getElementById('donationChart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width = canvas.offsetWidth;
+            const height = canvas.height = 300;
+            const barWidth = width / data.length - 10;
+            const maxDonation = Math.max(...data.map(d => d.donations));
+
+            ctx.clearRect(0, 0, width, height);
+            data.forEach((data, index) => {
+                const barHeight = (data.donations / maxDonation) * (height - 40);
+                const x = index * (barWidth + 10) + 10;
+                const y = height - barHeight - 20;
+
+                ctx.fillStyle = '#007bff';
+                ctx.fillRect(x, y, barWidth, barHeight);
+
+                ctx.fillStyle = '#333';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(data.month, x + barWidth / 2, height - 5);
+                ctx.fillText(`₹${data.donations}`, x + barWidth / 2, y - 5);
+            });
+        }
+
+        // Pie Chart
+        function drawPieChart(data) {
+            const canvas = document.getElementById('pieChart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width = canvas.offsetWidth;
+            const height = canvas.height = 300;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(centerX, centerY) - 20;
+            const total = data.reduce((sum, d) => sum + d.donors, 0);
+            let startAngle = 0;
+
+            ctx.clearRect(0, 0, width, height);
+            data.forEach((d, i) => {
+                const sliceAngle = (d.donors / total) * 2 * Math.PI;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = `hsl(${i * 60}, 70%, 50%)`;
+                ctx.fill();
+                startAngle += sliceAngle;
+
+                // Label
+                const labelX = centerX + (radius / 2) * Math.cos(startAngle - sliceAngle / 2);
+                const labelY = centerY + (radius / 2) * Math.sin(startAngle - sliceAngle / 2);
+                ctx.fillStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(d.month, labelX, labelY);
+            });
+        }
+
+        function drawCharts(data) {
+            drawBarChart(data);
+            drawPieChart(data);
+        }
+
+        drawCharts(trendsData);
+
+        // Simulate real-time updates
+        setInterval(() => {
+            trendsData.forEach(row => {
+                row.donations += Math.floor(Math.random() * 100);
+                row.donors += Math.floor(Math.random() * 2);
+            });
+            populateTable(trendsData);
+            updateStats(trendsData);
+            drawCharts(trendsData);
+        }, 30000);
+    </script>
+</body>
+</html>
